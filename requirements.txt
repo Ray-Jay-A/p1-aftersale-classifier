@@ -1,0 +1,8 @@
+# 售后单自动分类器 v1 —— 依赖清单
+# 用法：pip install -r requirements.txt
+# 环境：Python 3.12
+
+requests==2.34.2
+python-dotenv==1.2.3
+pandas==2.2.2
+openpyxl==3.1.5

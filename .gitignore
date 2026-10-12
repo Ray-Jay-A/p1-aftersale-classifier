@@ -1,0 +1,19 @@
+# .gitignore —— git 的「黑名单」
+# 写在这里的路径，git 会假装看不见（不会 add、更不会传到 GitHub）
+# 规则：一行一条；以 / 结尾表示「文件夹」
+
+# 1) ⚠️ 密钥（最重要！绝对不能传）
+key.env
+.env
+*.key
+
+# 2) 环境与缓存（体积大 / 自动生成 → 不进仓库）
+venv/
+.idea/
+__pycache__/
+*.pyc
+
+# 3) 系统垃圾文件
+.DS_Store
+Thumbs.db
+desktop.ini
