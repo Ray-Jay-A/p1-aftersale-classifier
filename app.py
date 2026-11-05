@@ -20,13 +20,13 @@ text = st.text_area("售后单文本", height=150)
 
 if up is not None:
     df = pd.read_excel(io.BytesIO(up.getvalue()))
-    st.write("读到", len(df), "行｜列名", list(df.columns))
+    st.caption(f"读到 {len(df)} 行 ｜ 列名：{', '.join(df.columns)}")
 
     if "工单文本" not in df.columns:
         st.error("这张表里没有工单文本这一列，传错文件了")
         st.stop()
 
-MAX_ROWS = 5
+MAX_ROWS = 5   # 演示口径：只跑前 5 条；要跑全量改成 21
 
 if up is None:
     st.info("先上传一个 Excel 再开始")
@@ -68,7 +68,13 @@ elif st.button("开始批量分类"):
 
 if "res" in st.session_state:
     r = st.session_state.res
-    st.dataframe(r)
+    st.dataframe(
+        r,
+        column_config={
+            "原文": st.column_config.TextColumn("原文", width="medium"),
+            "回复话术": st.column_config.TextColumn("回复话术", width="large"),
+        },
+    )
 
     ok = int((r["状态"] == "成功").sum())
     bad = st.session_state.used - ok

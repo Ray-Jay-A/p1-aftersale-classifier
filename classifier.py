@@ -1,9 +1,16 @@
 from dotenv import load_dotenv
+from pathlib import Path
 import os
 import requests
 import json
-load_dotenv(r'D:/learn/key.env')
+
+# 从「本文件所在的文件夹」找 key.env —— 不管从哪个目录启动、搬到哪台电脑都能找到
+env_path = Path(__file__).with_name("key.env")
+load_dotenv(env_path)
 API_KEY = os.getenv('DEEPSEEK_API_KEY')
+if not API_KEY:
+    raise RuntimeError(f"没读到 DEEPSEEK_API_KEY：请确认 {env_path} 存在，且里面有一行 DEEPSEEK_API_KEY=sk-xxx")
+
 url = 'https://api.deepseek.com/chat/completions'
 # url = 'https://api.deepseek.com/BAD'
 headers = {'Authorization': 'Bearer ' + API_KEY}
