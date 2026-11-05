@@ -5,12 +5,17 @@ from dotenv import load_dotenv
 import os
 import requests
 import pandas as pd
+from pathlib import Path
 
 data = pd.read_excel('工单待处理.xlsx')
 print(data)
 
-load_dotenv(r'D:/learn/key.env')  #<-----改成自己的路径
+# 从「本文件所在的文件夹」找 key.env —— 不管从哪个目录启动、搬到哪台电脑都能找到
+env_path = Path(__file__).with_name("key.env")
+load_dotenv(env_path)
 API_KEY = os.getenv('DEEPSEEK_API_KEY')
+if not API_KEY:
+    raise RuntimeError(f"没读到 DEEPSEEK_API_KEY：请确认 {env_path} 存在，且里面有一行 DEEPSEEK_API_KEY=sk-xxx")
 url = 'https://api.deepseek.com/chat/completions'
 headers = {'Authorization':'Bearer '+API_KEY}
 fail_counts = 0
@@ -88,7 +93,7 @@ result_Excel = pd.DataFrame(results)
 # print(result_Excel)
 result_Excel = result_Excel[['工单号','诉求方式','需求分类','优先级','回复话术']]
 result_Excel.to_excel("工单分类结果.xlsx", index=False)
-print(f'已生成：工单分类结果.xlsx 在D:/learn/code/W6/')
+print('已生成：工单分类结果.xlsx（就在当前目录）')
 
 df = pd.read_excel('工单分类结果.xlsx')
 print(f"共处理：{len(df)}条")
